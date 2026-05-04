@@ -20,6 +20,21 @@ stages:
               echo "Multiple line 1"
               echo "Multiple line 2"
             displayName: MultiLine Script
+            
+  - stage: SFDeployANDValidate
+    jobs:
+      - job: SFValidate
+        steps:
+          - script: npm install -g @salesforce/cli
+            displayName: Install Salesforce CI
+
+          - script: sf --version
+            displayName: Verify CLI Installation 
+          - script: |
+              echo 'y' | sf plugins install sfdx-git-delta
+              sf plugins install @salesforce/sfdx-scanner
+            displayName: Install Required Plugins
+  
   - stage: SFDeploy
     jobs:
       - job: SFDeploy
@@ -30,6 +45,7 @@ stages:
               echo "Multiple line 1"
               echo "Multiple line 2"
             displayName: MultiLine Script
+                        
   - stage: SFTest
     jobs:
       - job: SFTest
